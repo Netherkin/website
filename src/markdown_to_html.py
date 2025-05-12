@@ -76,13 +76,8 @@ def block_to_html_node(text, block_type):
                     ol.children.append(ParentNode("li", text_to_children(clean_line)))
             return ol
         
-def extract_title(markdown):
-    print(f"First 50 chars of markdown: '{markdown[:50]}'")
-    print(f"First line: '{markdown.split('\\n')[0]}'")
-    print(f"Does first line start with '# ': {markdown.split('\\n')[0].startswith('# ')}")
-    
+def extract_title(markdown):    
     for line in markdown.split('\n'):
-        print(f"Checking line: '{line}'")
         if line.startswith('# '):
             return line[2:].strip()
     raise Exception("No <h1> header in markdown")
