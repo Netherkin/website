@@ -53,7 +53,7 @@ def generate_pages_recursive(dir_path_content="content", template_path="template
                 new_html_file.write(full_html_page)
         elif os.path.isdir(source_path):
             os.makedirs(dest_path, exist_ok=True)
-            generate_pages_recursive(source_path, template_path, dest_path)
+            generate_pages_recursive(source_path, template_path, dest_path, basepath)
 
 def main():
     basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
