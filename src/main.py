@@ -30,8 +30,7 @@ def generate_page(from_path="content/index.md", template_path="template.html", d
     with open(dest_path, "w") as new_html_file:
         new_html_file.write(full_html_page)
 
-def generate_pages_recursive(dir_path_content="content", template_path="template.html", dest_dir_path="docs", basepath = "/"):
-    basepath = sys.argv[0]
+def generate_pages_recursive(dir_path_content="content", template_path="template.html", dest_dir_path="docs", basepath="/"):
     for file in os.listdir(dir_path_content):
         source_path = os.path.join(dir_path_content, file)
         dest_path = os.path.join(dest_dir_path, file)
@@ -57,8 +56,9 @@ def generate_pages_recursive(dir_path_content="content", template_path="template
             generate_pages_recursive(source_path, template_path, dest_path)
 
 def main():
+    basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
     delete_and_copy()
-    generate_pages_recursive()
+    generate_pages_recursive(basepath=basepath)
 
 if __name__ == "__main__":
     main()

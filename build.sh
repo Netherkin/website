@@ -1,1 +1,1 @@
-python3 src/main.py "/Netherkin/website/"
+python3 src/main.py "/website/"
