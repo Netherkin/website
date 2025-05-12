@@ -77,13 +77,12 @@ def block_to_html_node(text, block_type):
             return ol
         
 def extract_title(markdown):
-    html_node = markdown_to_html_node(markdown)
-    html = html_node.to_html()
-    title_start = "<h1>"
-    title_end = "</h1>"
-    if title_start in html:
-        first_split = html.split(title_start, 1)
-        second_split = (first_split[1].split(title_end, 1))
-        return second_split[0]
-    else:
-        raise Exception("No <h1> header in markdown")
+    print(f"First 50 chars of markdown: '{markdown[:50]}'")
+    print(f"First line: '{markdown.split('\\n')[0]}'")
+    print(f"Does first line start with '# ': {markdown.split('\\n')[0].startswith('# ')}")
+    
+    for line in markdown.split('\n'):
+        print(f"Checking line: '{line}'")
+        if line.startswith('# '):
+            return line[2:].strip()
+    raise Exception("No <h1> header in markdown")

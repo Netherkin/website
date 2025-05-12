@@ -29,16 +29,41 @@ def generate_page(from_path="content/index.md", template_path="template.html", d
     with open(dest_path, "w") as new_html_file:
         new_html_file.write(full_html_page)
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
-    
-
-
-
+def generate_pages_recursive(dir_path_content="content", template_path="template.html", dest_dir_path="public"):
+    print(f"Exploring dir: {dir_path_content}")
+    print(f"Files in directory: {os.listdir(dir_path_content)}")
+    for file in os.listdir(dir_path_content):
+        source_path = os.path.join(dir_path_content, file)
+        dest_path = os.path.join(dest_dir_path, file)
+        print(f"Checking: {source_path}")
+        print(f"Is file? {os.path.isfile(source_path)}")
+        if os.path.isfile(source_path) and os.path.splitext(source_path)[1] == ".md":
+            print(f"Extension: {os.path.splitext(source_path)[1]}")
+            html_file_name = os.path.splitext(dest_path)[0] + ".html"
+            print(f"Will generate HTML: {html_file_name}")
+            with open(source_path, "r") as read_from_path:
+                markdown_content = read_from_path.read()
+            with open(template_path, "r") as read_template_path:
+                template_content = read_template_path.read()
+            html_string = markdown_to_html_node(markdown_content).to_html()
+            try:
+                title = extract_title(markdown_content)
+            except Exception as e:
+                print(f"Warning: Could not extract title from {source_path}: {e}")
+                title = "Untitled Page"
+            full_html_page = template_content.replace("{{ Title }}", title).replace("{{ Content }}", html_string)
+            parent_dir = os.path.dirname(html_file_name)
+            print(f"Creating parent dir: {parent_dir}")
+            os.makedirs(parent_dir, exist_ok=True)
+            with open(html_file_name, "w") as new_html_file:
+                new_html_file.write(full_html_page)
+        elif os.path.isdir(source_path):
+            os.makedirs(dest_path, exist_ok=True)
+            generate_pages_recursive(source_path, template_path, dest_path)
 
 def main():
     delete_and_copy()
-    generate_page()
-
+    generate_pages_recursive()
 
 if __name__ == "__main__":
     main()
